@@ -1,0 +1,70 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    // provider = "mysql"
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model Business {
+    id          Int      @id @default(autoincrement())
+    name        String
+    email       String   @unique
+    address     String
+    phoneNumber String
+    createdAt   DateTime @default(now())
+    user        User[]
+}
+
+model IndividualCustomer {
+    id          Int      @id @default(autoincrement())
+    firstName   String
+    lastName    String
+    email       String   @unique
+    address     String
+    phoneNumber String
+    createdAt   DateTime @default(now())
+    User        User[]
+}
+
+model User {
+    id                       Int                 @id @default(autoincrement())
+    email                    String              @unique
+    name                     String?
+    password                 String
+    createdAt                DateTime            @default(now())
+    passwordChangedAt        DateTime?
+    passwordResetToken       String?
+    passwordResetTokenExpire DateTime?
+    roles                    Role[]
+    business                 Business?           @relation(fields: [businessId], references: [id])
+    individualCustomer       IndividualCustomer? @relation(fields: [individualCustomerId], references: [id])
+    businessId               Int?
+    individualCustomerId     Int?
+}
+
+model Role {
+    id          Int              @id @default(autoincrement())
+    name        String           @unique
+    createdAt   DateTime         @default(now())
+    updatedAt   DateTime         @updatedAt
+    users       User[]
+    permissions RolePermission[]
+}
+
+model Permission {
+    id         Int              @id @default(autoincrement())
+    permission String           @unique
+    slug       String           @unique
+    roles      RolePermission[]
+}
+
+model RolePermission {
+    id            Int        @id @default(autoincrement())
+    roleId       Int
+    permissionId Int
+    Role          Role       @relation(fields: [roleId], references: [id])
+    Permission    Permission @relation(fields: [permissionId], references: [id])
+}

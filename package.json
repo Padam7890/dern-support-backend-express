@@ -4,6 +4,8 @@
   "description": "The company provides on-site support for business customers. Individuals must either drop their computer off at one of the company’s offices or arrange for it to be delivered by a courier.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,9 +24,14 @@
   },
   "homepage": "https://github.com/Padam7890/dern-support-backend-express#readme",
   "dependencies": {
+    "@prisma/client": "^5.13.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "prisma": "^5.13.0"
   }
 }
