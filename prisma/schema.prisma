@@ -8,41 +8,24 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Business {
-    id          Int      @id @default(autoincrement())
-    name        String
-    email       String   @unique
-    address     String
-    phoneNumber String
-    createdAt   DateTime @default(now())
-    user        User[]
-}
-
-model IndividualCustomer {
-    id          Int      @id @default(autoincrement())
-    firstName   String
-    lastName    String
-    email       String   @unique
-    address     String
-    phoneNumber String
-    createdAt   DateTime @default(now())
-    User        User[]
-}
 
 model User {
-    id                       Int                 @id @default(autoincrement())
-    email                    String              @unique
+    id                       Int              @id @default(autoincrement())
+    email                    String           @unique
     name                     String?
     password                 String
-    createdAt                DateTime            @default(now())
+    createdAt                DateTime         @default(now())
     passwordChangedAt        DateTime?
     passwordResetToken       String?
     passwordResetTokenExpire DateTime?
     roles                    Role[]
-    business                 Business?           @relation(fields: [businessId], references: [id])
-    individualCustomer       IndividualCustomer? @relation(fields: [individualCustomerId], references: [id])
-    businessId               Int?
-    individualCustomerId     Int?
+    SupportRequests          SupportRequest[]
+    userType                 userType
+}
+
+enum userType {
+    Business
+    IndividualCustomer
 }
 
 model Role {
@@ -54,6 +37,7 @@ model Role {
     permissions RolePermission[]
 }
 
+
 model Permission {
     id         Int              @id @default(autoincrement())
     permission String           @unique
@@ -61,10 +45,70 @@ model Permission {
     roles      RolePermission[]
 }
 
+
 model RolePermission {
-    id            Int        @id @default(autoincrement())
+    id           Int        @id @default(autoincrement())
     roleId       Int
     permissionId Int
-    Role          Role       @relation(fields: [roleId], references: [id])
-    Permission    Permission @relation(fields: [permissionId], references: [id])
+    Role         Role       @relation(fields: [roleId], references: [id])
+    Permission   Permission @relation(fields: [permissionId], references: [id])
+}
+
+
+
+model SparePart {
+    id       Int    @id @default(autoincrement())
+    name     String
+    price    Int
+    quantity Int
+    weight   Int
+    stock    String
+}
+
+
+model SupportRequest {
+    id             Int              @id @default(autoincrement())
+    userId         Int
+    user           User             @relation(fields: [userId], references: [id])
+    description    String
+    status         String
+    repairjob      RepairJob[]
+    ManagementData ManagementData[]
+}
+
+
+
+model RepairJob {
+    id               Int            @id @default(autoincrement())
+    supportRequestId Int
+    supportRequest   SupportRequest @relation(fields: [supportRequestId], references: [id])
+    scheduledDate    DateTime
+}
+
+
+
+model KnowledgeBaseArticle {
+    id      Int    @id @default(autoincrement())
+    title   String
+    content String
+}
+
+
+
+model DailyJob {
+    id       Int      @id @default(autoincrement())
+    date     DateTime
+    priority String?
+    status   String?
+}
+
+
+model ManagementData {
+    id                   Int            @id @default(autoincrement())
+    supportRequestId     Int
+    supportRequest       SupportRequest @relation(fields: [supportRequestId], references: [id])
+    commonIssues         String
+    timeTaken            Float
+    customerSatisfaction Float
+    location             String
 }
