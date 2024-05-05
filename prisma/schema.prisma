@@ -8,7 +8,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-
 model User {
     id                       Int              @id @default(autoincrement())
     email                    String           @unique
@@ -37,14 +36,12 @@ model Role {
     permissions RolePermission[]
 }
 
-
 model Permission {
     id         Int              @id @default(autoincrement())
     permission String           @unique
     slug       String           @unique
     roles      RolePermission[]
 }
-
 
 model RolePermission {
     id           Int        @id @default(autoincrement())
@@ -53,8 +50,6 @@ model RolePermission {
     Role         Role       @relation(fields: [roleId], references: [id])
     Permission   Permission @relation(fields: [permissionId], references: [id])
 }
-
-
 
 model SparePart {
     id       Int    @id @default(autoincrement())
@@ -65,35 +60,43 @@ model SparePart {
     stock    String
 }
 
-
 model SupportRequest {
     id             Int              @id @default(autoincrement())
     userId         Int
     user           User             @relation(fields: [userId], references: [id])
-    description    String
-    status         String
+    description    String           @db.Text
+    status         SupportStatus    @default(Submitted)
     repairjob      RepairJob[]
     ManagementData ManagementData[]
 }
 
-
+enum SupportStatus {
+    Submitted
+    Scheduled
+    InProgress
+    Completed
+}
 
 model RepairJob {
     id               Int            @id @default(autoincrement())
-    supportRequestId Int
+    supportRequestId Int            @unique
+    productName      String?
     supportRequest   SupportRequest @relation(fields: [supportRequestId], references: [id])
+    status           RepairStatus   @default(Scheduled)
     scheduledDate    DateTime
 }
 
-
+enum RepairStatus {
+    Scheduled
+    InProgress
+    Completed
+}
 
 model KnowledgeBaseArticle {
     id      Int    @id @default(autoincrement())
     title   String
-    content String
+    content String @db.Text
 }
-
-
 
 model DailyJob {
     id       Int      @id @default(autoincrement())
@@ -101,7 +104,6 @@ model DailyJob {
     priority String?
     status   String?
 }
-
 
 model ManagementData {
     id                   Int            @id @default(autoincrement())
