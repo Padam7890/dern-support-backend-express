@@ -20,6 +20,7 @@ model User {
     roles                    Role[]
     SupportRequests          SupportRequest[]
     userType                 userType
+    DailyJob                 DailyJob[]
 }
 
 enum userType {
@@ -81,9 +82,11 @@ model RepairJob {
     id               Int            @id @default(autoincrement())
     supportRequestId Int            @unique
     productName      String?
+    address          String?
     supportRequest   SupportRequest @relation(fields: [supportRequestId], references: [id])
     status           RepairStatus   @default(Scheduled)
     scheduledDate    DateTime
+    dailyJob         DailyJob?
 }
 
 enum RepairStatus {
@@ -99,10 +102,14 @@ model KnowledgeBaseArticle {
 }
 
 model DailyJob {
-    id       Int      @id @default(autoincrement())
-    date     DateTime
-    priority String?
-    status   String?
+    id           Int       @id @default(autoincrement())
+    date         DateTime
+    priority     String?
+    status       String?
+    assignedToId Int? 
+    assignedTo   User?     @relation(fields: [assignedToId], references: [id])
+    repairJob    RepairJob @relation(fields: [repairJobId], references: [id])
+    repairJobId  Int       @unique
 }
 
 model ManagementData {

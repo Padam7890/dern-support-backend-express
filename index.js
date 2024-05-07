@@ -1,29 +1,29 @@
-const express = require('express');
-const cors = require('cors');
-const cookieparser = require('cookie-parser');
-const dotenv = require('dotenv');
-const LoadRoutes = require('./src/routes/router');
-
+const express = require("express");
+const cors = require("cors");
+const cookieparser = require("cookie-parser");
+const dotenv = require("dotenv");
+const LoadRoutes = require("./src/routes/router");
 
 const app = express();
-app.use(cors(
-    
-));
-
-
+app.use(cors());
 
 app.use(express.json());
 app.use(cookieparser());
 dotenv.config();
-app.use(express.urlencoded({ 
+app.use(
+  express.urlencoded({       
     extended: true,
-    limit: "50mb"
-}))
+    limit: "50mb",
+  })
+);
 
 app.use("/storage", express.static("storage"));
 LoadRoutes(app);
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
+app.get("/api/", function (req, res) {
+
 });
 
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
+});

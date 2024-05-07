@@ -49,8 +49,7 @@ const login = async (req, res) => {
       maxAge: 1000 * 60 * 60 * 24 * 1,
     });
     return res.status(201).json({
-      message: "User created successfully",
-      data: userExists,
+      message: "Logged In",
       accessToken: accessToken,
       refreshToken: refreshToken,
     });
