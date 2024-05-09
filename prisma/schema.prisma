@@ -62,13 +62,13 @@ model SparePart {
 }
 
 model SupportRequest {
-    id             Int              @id @default(autoincrement())
-    userId         Int
-    user           User             @relation(fields: [userId], references: [id])
-    description    String           @db.Text
-    status         SupportStatus    @default(Submitted)
-    repairjob      RepairJob[]
-    ManagementData ManagementData[]
+    id                Int              @id @default(autoincrement())
+    userId            Int
+    user              User             @relation(fields: [userId], references: [id])
+    description       String           @db.Text
+    status            SupportStatus    @default(Submitted)
+    repairjob         RepairJob[]
+    ManagementData    ManagementData[]
 }
 
 enum SupportStatus {
@@ -84,7 +84,7 @@ model RepairJob {
     productName      String?
     address          String?
     supportRequest   SupportRequest @relation(fields: [supportRequestId], references: [id])
-    status           RepairStatus   @default(Scheduled)
+    status           RepairStatus   @default(Scheduled) 
     scheduledDate    DateTime
     dailyJob         DailyJob?
 }
@@ -106,7 +106,7 @@ model DailyJob {
     date         DateTime
     priority     String?
     status       String?
-    assignedToId Int? 
+    assignedToId Int?
     assignedTo   User?     @relation(fields: [assignedToId], references: [id])
     repairJob    RepairJob @relation(fields: [repairJobId], references: [id])
     repairJobId  Int       @unique
