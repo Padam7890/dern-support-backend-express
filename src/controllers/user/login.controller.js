@@ -42,12 +42,14 @@ const login = async (req, res) => {
         expiresIn: "30d",
       }
     );
-    res.cookie("jwt", refreshToken, {
-      httpOnly: true,
+    res.cookie('LOGIN_INFO', refreshToken, {
       secure: true,
-      sameSite: "none",
-      maxAge: 1000 * 60 * 60 * 24 * 1,
+      maxAge: 1000 * 60 * 60 * 24 * 10,
+      sameSite:"none",
+      priority:"High"
+
     });
+    
     return res.status(201).json({
       message: "Logged In",
       accessToken: accessToken,

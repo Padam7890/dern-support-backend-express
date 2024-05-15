@@ -62,11 +62,11 @@ const register = async (req, res) => {
         expiresIn: "30d",
       }
     );
-    res.cookie("jwt", refreshToken, {
-      httpOnly: true,
+    res.cookie('myCookie', refreshToken, {
+      domain: 'localhost',
+      path: '/',
       secure: true,
-      sameSite: "none",
-      maxAge: 1000 * 60 * 60 * 24 * 1,
+      httpOnly: true
     });
 
     return res.status(201).json({

@@ -1,5 +1,6 @@
 const express = require("express");
 const { seedRoles, seedPermissions, seedRolePermissions } = require("../../prisma/seed");
+const sendmails = require("../controllers/repair/repairMail.controller");
 const router = express.Router();
 
 
@@ -16,5 +17,7 @@ router.post('/seed', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+
+  router.post('/sendRepair/mail',  sendmails);
 
   module.exports = router;

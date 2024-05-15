@@ -5,10 +5,15 @@ const dotenv = require("dotenv");
 const LoadRoutes = require("./src/routes/router");
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true 
+}));
 
 app.use(express.json());
 app.use(cookieparser());
+
 dotenv.config();
 app.use(
   express.urlencoded({       
@@ -20,7 +25,7 @@ app.use(
 app.use("/storage", express.static("storage"));
 LoadRoutes(app);
 
-app.get("/api/", function (req, res) {
+app.get("/api", function (req, res) {
 
 });
 
