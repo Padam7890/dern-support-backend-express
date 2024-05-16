@@ -49,7 +49,7 @@ const register = async (req, res) => {
       },
       process.env.JWT_SECRET_KEY,
       {
-        expiresIn: "1h",
+        expiresIn: "1d",
       }
     );
     const refreshToken = jwt.sign(
@@ -59,15 +59,10 @@ const register = async (req, res) => {
       },
       process.env.REFRESH_TOKEN_SECRET,
       {
-        expiresIn: "30d",
+        expiresIn: "7d",
       }
     );
-    res.cookie('myCookie', refreshToken, {
-      domain: 'localhost',
-      path: '/',
-      secure: true,
-      httpOnly: true
-    });
+
 
     return res.status(201).json({
       message: "User created successfully",

@@ -29,7 +29,7 @@ const login = async (req, res) => {
       },
       process.env.JWT_SECRET_KEY,
       {
-        expiresIn: "1h",
+        expiresIn: "1d",
       }
     );
     const refreshToken = jwt.sign(
@@ -39,16 +39,9 @@ const login = async (req, res) => {
       },
       process.env.REFRESH_TOKEN_SECRET,
       {
-        expiresIn: "30d",
+        expiresIn: "7d",
       }
     );
-    res.cookie('LOGIN_INFO', refreshToken, {
-      secure: true,
-      maxAge: 1000 * 60 * 60 * 24 * 10,
-      sameSite:"none",
-      priority:"High"
-
-    });
     
     return res.status(201).json({
       message: "Logged In",
