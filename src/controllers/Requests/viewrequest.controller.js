@@ -14,10 +14,13 @@ const requestView = async (req, res) => {
             name: true,
             email: true,
             userType: true,
+            roles:true
           },
+       
         },
         ManagementData: true,
         repairjob: true,
+        
       },
     });
     res.json({
