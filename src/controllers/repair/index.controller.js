@@ -1,13 +1,11 @@
+const searchByQueries = require("../../helpers/searchquer");
 const repairJob = require("../../models/repair.model");
 
 const getAllRepairs = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const pageSize = parseInt(req.query.size) || 10;
-    const skip = (page - 1) * pageSize;
-    const searchQuery = req.query.q || ""; // Step 1: Extract search query
+    const {skip, pageSize,page, searchQuery} = searchByQueries(req)
 
-    console.log(page + " " + pageSize);
+    // console.log(page + " " + pageSize);
 
     const totalRepairs = await repairJob.count();
     const allrepairs = await repairJob.findMany({

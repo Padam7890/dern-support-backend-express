@@ -1,14 +1,12 @@
 const { prisma } = require("../../configs/prisma");
+const searchByQueries = require("../../helpers/searchquer");
 const supportRequest = require("../../models/supportrequest.model");
 const users = require("../../models/user.model");
 
 const getRequest = async (req, res) => {
   try {
     const userId = req.user.id;
-    const page = parseInt(req.query.page) || 1;
-    const pageSize = parseInt(req.query.size) || 10;
-    const searchQuery = req.query.q || ""; // Step 1: Extract search query
-    const skip = (page - 1) * pageSize;
+    const {skip, pageSize,page, searchQuery} = searchByQueries(req)
 
     // Fetch the user with roles
     const user = await users.findUnique({
