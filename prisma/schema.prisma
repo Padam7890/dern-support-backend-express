@@ -99,6 +99,7 @@ model KnowledgeBaseArticle {
     id      Int    @id @default(autoincrement())
     title   String
     content String @db.Text
+    image   String
 }
 
 model DailyJob {

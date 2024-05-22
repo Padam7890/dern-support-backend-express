@@ -3,7 +3,13 @@ const articles = require("../../models/knowldge.model");
 const updatearticles = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, content } = req.body;
+    const { title, content, newimage } = req.body;
+    let image = req.cloudinaryUrl;
+    if (image === null) {
+      image = newimage;
+      console.log("image" + image);
+    }
+
     const updateData = await articles.update({
       where: {
         id: parseInt(id),
@@ -11,6 +17,7 @@ const updatearticles = async (req, res) => {
       data: {
         title: title,
         content: content,
+        image: image,
       },
     });
     res.status(200).json({

@@ -10,7 +10,7 @@ function LoadRoutes(app){
     app.use('/', generalRoutes);
     app.use("/request", checkAuth, supportRoutes);
     app.use("/repairItems", checkAuth, repairRoutes)
-    app.use("/articles",checkAuth, articlesRoute);
+    app.use("/articles", articlesRoute);
 }
 
 module.exports = LoadRoutes;

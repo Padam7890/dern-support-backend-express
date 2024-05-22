@@ -23,6 +23,7 @@ app.use(
 );
 
 app.use("/storage", express.static("storage"));
+
 LoadRoutes(app);
 
 app.get("/api", function (req, res) {
