@@ -7,16 +7,17 @@ async function uploadToCloudinary(req, res, next) {
     if (req.file) {
       await cloudinary.uploader.upload(req.file.path, function (error, result) {
         if (error) {
-          console.error(error);
+          // console.error(error);
           return res
             .status(500)
-            .json({ error: "Error uploading file to Cloudinary" });
+            .json({ message: "No Network Try Again" });
         }
         req.cloudinaryUrl = result.secure_url;
         console.log(req.cloudinaryUrl)
         next();
       });
     }
+
 
     // Handle multiple file uploads
     else if (req.files) {
@@ -27,7 +28,7 @@ async function uploadToCloudinary(req, res, next) {
             console.error(error);
             return res
               .status(500)
-              .json({ error: "Error uploading file to Cloudinary" });
+              .json({ message: "No Network try again" });
           }
           cloudinaryUrls.push(result.secure_url);
         });

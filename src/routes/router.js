@@ -3,7 +3,10 @@ const generalRoutes = require("./generalRoute");
 const supportRoutes = require("./supportRoute");
 const repairRoutes = require("./repairRoute");
 const checkAuth = require("../middleware/auth");
-const articlesRoute = require("./articlesRoute")
+const articlesRoute = require("./articlesRoute");
+const quotationRoute = require("./quotationRoute");
+
+const spareRoute = require("./spareRoute")
 
 function LoadRoutes(app){
     app.use("/auth", userRouter);
@@ -11,6 +14,10 @@ function LoadRoutes(app){
     app.use("/request", checkAuth, supportRoutes);
     app.use("/repairItems", checkAuth, repairRoutes)
     app.use("/articles", articlesRoute);
+    app.use("/spareParts", spareRoute)
+    app.use("/quotation", quotationRoute)
+
+
 }
 
 module.exports = LoadRoutes;

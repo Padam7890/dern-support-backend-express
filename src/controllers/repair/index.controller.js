@@ -25,11 +25,6 @@ const getAllRepairs = async (req, res) => {
               },
             },
           },
-          // {
-          //   status: {
-          //     in: ,
-          //   },
-          // },
         ],
         
       },

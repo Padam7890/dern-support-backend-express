@@ -53,29 +53,46 @@ model RolePermission {
 }
 
 model SparePart {
-    id       Int    @id @default(autoincrement())
-    name     String
-    price    Int
-    quantity Int
-    weight   Int
-    stock    String
+    id        Int         @id @default(autoincrement())
+    name      String
+    price     Int
+    quantity  Int
+    weight    Int
+    stock     String
+    RepairJob RepairJob[]
 }
 
 model SupportRequest {
-    id                Int              @id @default(autoincrement())
-    userId            Int
-    user              User             @relation(fields: [userId], references: [id])
-    description       String           @db.Text
-    status            SupportStatus    @default(Submitted)
-    repairjob         RepairJob[]
-    ManagementData    ManagementData[]
+    id             Int              @id @default(autoincrement())
+    userId         Int
+    user           User             @relation(fields: [userId], references: [id])
+    description    String           @db.Text
+    status         SupportStatus    @default(Submitted)
+    repairjob      RepairJob[]
+    ManagementData ManagementData[]
+    Quotation      Quotation?
 }
 
 enum SupportStatus {
     Submitted
-    Scheduled
-    InProgress
-    Completed
+    Accepted
+    Rejected
+}
+
+model Quotation {
+    id               Int             @id @default(autoincrement())
+    price            Decimal
+    productName      String
+    productId        Int             
+    status           QuotationStatus @default(Pending)
+    SupportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
+    supportRequestId Int?            @unique
+}
+
+enum QuotationStatus {
+    Pending
+    Accepted
+    Rejected
 }
 
 model RepairJob {
@@ -84,9 +101,11 @@ model RepairJob {
     productName      String?
     address          String?
     supportRequest   SupportRequest @relation(fields: [supportRequestId], references: [id])
-    status           RepairStatus   @default(Scheduled) 
+    status           RepairStatus   @default(Scheduled)
     scheduledDate    DateTime
     dailyJob         DailyJob?
+    spareparts       SparePart?     @relation(fields: [sparePartId], references: [id])
+    sparePartId      Int?
 }
 
 enum RepairStatus {

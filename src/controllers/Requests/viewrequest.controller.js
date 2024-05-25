@@ -20,6 +20,8 @@ const requestView = async (req, res) => {
         },
         ManagementData: true,
         repairjob: true,
+        Quotation:true,
+
         
       },
     });
@@ -39,3 +41,4 @@ const requestView = async (req, res) => {
 };
 
 module.exports = requestView;
+
