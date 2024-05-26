@@ -4,7 +4,15 @@ const getallusers = async (req, res) => {
   try {
     const allusers = await user.findMany({
       include: {
-        roles: true,
+        roles: {
+          include:{
+            permissions:{
+              include:{
+                Permission:true
+              }
+            }
+          }
+        },
       },
     });
     res.json(allusers);
