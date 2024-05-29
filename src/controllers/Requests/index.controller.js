@@ -12,7 +12,7 @@ const getRequest = async (req, res) => {
     const user = await users.findUnique({
       where: { id: userId },
       include: { roles: true },
-    });
+    });  
 
     if (!user) {
       return res
