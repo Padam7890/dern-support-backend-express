@@ -4,55 +4,14 @@ const supportRequest = require("../../models/supportrequest.model");
 
 const createRequest = async (req, res) => {
   try {
-    const {
-      description,
-      isRepair,
-      productName,
-      scheduledDate,
-      address,
-    } = req.body;
+    const { description } = req.body;
 
-    let convertscheduleDate = scheduledDate
-      ? new Date(scheduledDate).toISOString()
-      : null;
-
-    if (typeof isRepair !== "boolean") {
-      return res.status(400).json({
-        message: "Invalid value for isRepair. It must be a boolean.",
-        statusCode: 400,
-      });
-    }
-
-    let savedata;
-
-    if (!isRepair) {
-      savedata = await supportRequest.create({
-        data: {
-          description,
-          userId: req.user.id,
-        },
-      });
-    } else {
-      savedata = await supportRequest.create({
-        data: {
-          description,
-          userId: req.user.id,
-          repairjob: {
-            create: {
-              productName,
-              address,
-              scheduledDate: convertscheduleDate,
-              dailyJob: {
-                create: {
-                  date: new Date(),
-                  status: "active",
-                },
-              },
-            },
-          },
-        },
-      });
-    }
+    const savedata = await supportRequest.create({
+      data: {
+        description,
+        userId: req.user.id,
+      },
+    });
 
     return res.status(200).json({
       message: "Request created successfully",

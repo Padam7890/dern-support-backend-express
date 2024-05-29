@@ -41,6 +41,11 @@ const getRequest = async (req, res) => {
       where: whereClause,
       skip,
       take: pageSize,
+      orderBy:[
+        {
+          id:'desc' 
+        }
+      ],
       include: {
         user: {
           select: {

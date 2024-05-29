@@ -1,25 +1,36 @@
 const jwt = require("jsonwebtoken");
+const user = require("../models/user.model");
 
-const checkAuth = (request, response, next) => {
-  let token = request.headers.authorization;
-   console.log(token);
-   
+const checkAuth = async (req, res, next) => {
+  let token = req.headers.authorization;
+  console.log(token);
+
   if (!token) {
-    response.status(401).json({ message: "Not Logged in" });
-    return;
+    return res.status(401).json({ message: "Not Logged in" });
   }
 
   try {
     token = token.split(" ")[1];
-    
+
     // Verify the JWT token
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    
-    request.user = decoded;
-    
+
+    // Fetch the user from the database
+    const currentUser = await user.findUnique({
+      where: { id: decoded.id },
+      include: { roles: true },
+    });
+
+    if (!currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    req.user = currentUser;
+
     next();
   } catch (error) {
-    response.status(401).json({ message: "Invalid token" });
+    console.error('Authentication error:', error);
+    res.status(401).json({ message: "Invalid token" });
   }
 };
 

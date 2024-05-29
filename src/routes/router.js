@@ -13,10 +13,10 @@ function LoadRoutes(app){
     app.use('/', generalRoutes);
     app.use("/request", checkAuth, supportRoutes);
     app.use("/repairItems", checkAuth, repairRoutes);
-    app.use("/articles", articlesRoute);
-    app.use("/spareParts", spareRoute);
-    app.use("/quotation", quotationRoute);
-    app.use("/dailyJob", dailyJobRoute )
+    app.use("/articles", checkAuth, articlesRoute);
+    app.use("/spareParts", checkAuth, spareRoute);
+    app.use("/quotation", checkAuth, quotationRoute);
+    app.use("/dailyJob", checkAuth, dailyJobRoute )
 
 
 }

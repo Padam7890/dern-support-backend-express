@@ -17,7 +17,11 @@ const sendEmail = async (option) => {
       subject: option.subject,
       html: option.html,
     };
-    await transporter.sendMail(emailoption);
+    try {
+      await transporter.sendMail(emailoption);
+    } catch (error) {
+      console.log(error);
+    }
     return "Email Sent Successfully";
   } catch (error) {
     throw new Error("Error sending email");
