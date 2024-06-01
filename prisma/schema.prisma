@@ -53,12 +53,13 @@ model RolePermission {
 }
 
 model SparePart {
-    id        Int         @id @default(autoincrement())
+    id        Int      @id @default(autoincrement())
     name      String
     price     Int
     quantity  Int
     weight    Int
     stock     String
+    createdAt DateTime @default(now())
     RepairJob RepairJob[]
 }
 
@@ -68,6 +69,7 @@ model SupportRequest {
     user           User             @relation(fields: [userId], references: [id])
     description    String           @db.Text
     status         SupportStatus    @default(Submitted)
+    createdAt      DateTime         @default(now())
     repairjob      RepairJob[]
     ManagementData ManagementData[]
     Quotation      Quotation?
@@ -83,7 +85,7 @@ model Quotation {
     id               Int             @id @default(autoincrement())
     price            Decimal
     productName      String
-    productId        Int             
+    productId        Int
     status           QuotationStatus @default(Pending)
     SupportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
     supportRequestId Int?            @unique
@@ -106,6 +108,7 @@ model RepairJob {
     dailyJob         DailyJob?
     spareparts       SparePart?     @relation(fields: [sparePartId], references: [id])
     sparePartId      Int?
+    createdAt        DateTime       @default(now())
 }
 
 enum RepairStatus {

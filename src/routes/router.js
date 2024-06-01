@@ -18,7 +18,6 @@ function LoadRoutes(app){
     app.use("/quotation", checkAuth, quotationRoute);
     app.use("/dailyJob", checkAuth, dailyJobRoute )
 
-
 }
 
 module.exports = LoadRoutes;
