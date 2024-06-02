@@ -9,6 +9,7 @@ const deleteRepair = async (req, res) => {
         where: {
           repairJobId: parseInt(id),
         },
+        
       });
       await transaction.repairJob.delete({
         where: {

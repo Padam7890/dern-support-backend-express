@@ -8,23 +8,29 @@ const seedRoles = async () => {
       { name: "customer" },
     ];
 
-
     // Check if roles already exist
     const existingRoles = await prisma.role.findMany({});
     if (existingRoles.length > 0) {
       console.log("Roles already seeded");
-      return;
+      return existingRoles;
     } else {
       // Seed roles if not existing
-      const createdRoles = await prisma.role.createMany({
-        data: rolesData,
-      });
-      console.log("Roles seeded successfully", createdRoles);
+      for (const index in rolesData) {
+        const role = rolesData[index];
+        await prisma.role.create({
+          data: role,
+        });
+        console.log(`Role ${role.name} seeded successfully`);
+      }
+      
+      // Fetch and return newly created roles
+      return await prisma.role.findMany({});
     }
   } catch (error) {
-    console.error("Error seeding roles:", error); // Fixed: Improved error logging
+    console.error("Error seeding roles:", error);
   }
 };
+
 
 const seedPermissions = async () => {
   try {
@@ -42,13 +48,14 @@ const seedPermissions = async () => {
       return;
     } else {
       // Seed permissions if not existing
-      const createdPermissions = await prisma.permission.createMany({
+      await prisma.permission.createMany({
         data: permissionsData,
+        skipDuplicates: true, // Ensures duplicate entries are skipped
       });
-      console.log("Permissions seeded successfully", createdPermissions);
+      console.log("Permissions seeded successfully");
     }
   } catch (error) {
-    console.error("Error seeding permissions:", error); // Fixed: Improved error logging
+    console.error("Error seeding permissions:", error);
   }
 };
 
@@ -71,27 +78,18 @@ const seedRolePermissions = async () => {
       return;
     } else {
       // Seed role permissions if not existing
-      const createdRolePermissions = await prisma.rolePermission.createMany({
+      await prisma.rolePermission.createMany({
         data: rolePermissionsData,
+        skipDuplicates: true, // Ensures duplicate entries are skipped
       });
-      console.log("Role permissions seeded successfully", createdRolePermissions);
+      console.log("Role permissions seeded successfully");
     }
   } catch (error) {
-    console.error("Error seeding role permissions:", error); // Fixed: Improved error logging
+    console.error("Error seeding role permissions:", error);
   }
-
 };
 
-// const seedDatabase = async () => {
-//   await seedRoles();
-//   await seedPermissions();
-//   await seedRolePermissions();
-// };
 
-// // Fixed: Ensure the seeding process is executed and handle any errors
-// seedDatabase().catch((error) => {
-//   console.error("Error seeding database:", error);
-// });
 
 
 const usertoAdmin = async (req, res) => {

@@ -13,11 +13,12 @@ const login = async (req, res) => {
       return res.status(404).json({
         message: "User Not Exists",
       });
+
     }
     const isMatch = await bcrypt.compare(password, userExists.password);
 
     if (!isMatch) {
-      return res.status(401).json({
+      return res.status(404).json({
         message: "Invalid Password",
       });
     }

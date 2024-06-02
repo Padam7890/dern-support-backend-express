@@ -43,6 +43,7 @@ const saveQuations = async (req, res) => {
       error: error.message,
     });
   }
+  
 };
 
 module.exports = saveQuations;
