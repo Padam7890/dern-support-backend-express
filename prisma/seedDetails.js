@@ -22,7 +22,7 @@ const seedRoles = async () => {
         });
         console.log(`Role ${role.name} seeded successfully`);
       }
-      
+
       // Fetch and return newly created roles
       return await prisma.role.findMany({});
     }
@@ -30,7 +30,6 @@ const seedRoles = async () => {
     console.error("Error seeding roles:", error);
   }
 };
-
 
 const seedPermissions = async () => {
   try {
@@ -58,6 +57,8 @@ const seedPermissions = async () => {
     console.error("Error seeding permissions:", error);
   }
 };
+
+//run seed roles if somwone access this file
 
 const seedRolePermissions = async () => {
   try {
@@ -89,9 +90,6 @@ const seedRolePermissions = async () => {
   }
 };
 
-
-
-
 const usertoAdmin = async (req, res) => {
   try {
     const { id } = req.params;
@@ -102,12 +100,16 @@ const usertoAdmin = async (req, res) => {
       include: { roles: true },
     });
 
-    if (!user) return res.status(404).json({ message: "User not found", statusCode: 404 });
+    if (!user)
+      return res
+        .status(404)
+        .json({ message: "User not found", statusCode: 404 });
 
-    const isAdmin = user.roles.some(role => role.name === "admin");
-    const isUser = user.roles.some(role => role.name === "user");
+    const isAdmin = user.roles.some((role) => role.name === "admin");
+    const isUser = user.roles.some((role) => role.name === "user");
 
-    if (isAdmin) return res.status(400).json({ error: "User is already an admin" });
+    if (isAdmin)
+      return res.status(400).json({ error: "User is already an admin" });
 
     const [adminRole, userRole, customerRole] = await Promise.all([
       prisma.role.findFirst({ where: { name: "admin" } }),
@@ -115,7 +117,10 @@ const usertoAdmin = async (req, res) => {
       prisma.role.findFirst({ where: { name: "customer" } }),
     ]);
 
-    if (!adminRole) return res.status(404).json({ message: "Admin role not found", statusCode: 404 });
+    if (!adminRole)
+      return res
+        .status(404)
+        .json({ message: "Admin role not found", statusCode: 404 });
 
     const updateRoles = async (disconnectId, connectId) => {
       await prisma.user.update({
@@ -134,14 +139,18 @@ const usertoAdmin = async (req, res) => {
       return res.json({ message: "User is now an admin", statusCode: 200 });
     } else {
       await updateRoles(customerRole.id, userRole.id);
-      return res.json({ message: "Customer is now a User!!! Run Again to make Admin", statusCode: 200 });
+      return res.json({
+        message: "Customer is now a User!!! Run Again to make Admin",
+        statusCode: 200,
+      });
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Internal server error", statusCode: 500 });
+    return res
+      .status(500)
+      .json({ message: "Internal server error", statusCode: 500 });
   }
 };
-
 
 module.exports = {
   seedRoles,

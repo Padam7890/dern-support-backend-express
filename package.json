@@ -4,6 +4,7 @@
   "description": "The company provides on-site support for business customers. Individuals must either drop their computer off at one of the company’s offices or arrange for it to be delivered by a courier.",
   "main": "index.js",
   "scripts": {
+    "seed": "node seed.js",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"

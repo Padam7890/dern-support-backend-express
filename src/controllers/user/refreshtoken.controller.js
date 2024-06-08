@@ -24,7 +24,7 @@ const refreshTokenCheck = (request, response) => {
       { id: decoded.id, roles: decoded.roles },
       process.env.JWT_SECRET_KEY,
       {
-        expiresIn: "5s",
+        expiresIn: "7d",
       }
     );
 

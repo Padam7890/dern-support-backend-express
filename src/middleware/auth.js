@@ -29,7 +29,7 @@ const checkAuth = async (req, res, next) => {
 
     next();
   } catch (error) {
-    // console.error('Authentication error:', error);
+    console.error('Authentication error:', error);
     res.status(401).json({ message: "Invalid token" });
   }
 };
